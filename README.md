@@ -14,9 +14,26 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 * SbusPort -- a text field giving the UNIX device that this progam should listen to. It defaults to ```/dev/ttyO4```, which is the DSM port on a Beaglebone Blue. 
 
 # Published Variables
-* SBUS_json -- each received frame as a STRING containing JSON of the following format:
+* SBUS_json -- each received frame as a STRING containing JSON with the following schema:
 ```
-{proportional:[...],digital16:{true|false},digital17:{true|false},failsafe:{true|false}}
+{
+	"$schema": "http://json-schema.org/schema#",
+	"type": "object",
+	"properties":{
+		"proportional":{
+			"type": "array",
+			"items": {"type":"number"},
+			"minItems":16,
+			"maxItems":16,
+			"$comment":"This stores the 16 channels of the S.Bus signal"
+		},
+		"digital16":{"type":"boolean"},
+		"digital17":{"type":"boolean"},
+		"failsafe":{"type":"boolean"},
+		"$comment":"failsafe is true if the S.Bus receiver is in failsafe mode"
+	},
+	"required": ["proportional", "digital16", "digital17", "failsafe"]
+}
 ```
 * SBUS_Ch{00-15} -- a DOUBLE containing the proportional value in microseconds. 
 * SBUS_Ch16 -- a BINARY containing the received value of the channel
