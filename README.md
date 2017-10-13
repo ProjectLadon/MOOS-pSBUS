@@ -18,6 +18,7 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 ```
 {
 	"$schema": "http://json-schema.org/schema#",
+	"id": "SBUS_output",
 	"type": "object",
 	"properties":{
 		"proportional":{

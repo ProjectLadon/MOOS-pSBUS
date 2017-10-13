@@ -1,0 +1,19 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"id": "SBUS_output",
+	"type": "object",
+	"properties":{
+		"proportional":{
+			"type": "array",
+			"items": {"type":"number"},
+			"minItems":16,
+			"maxItems":16,
+			"$comment":"This stores the 16 channels of the S.Bus signal"
+		},
+		"digital16":{"type":"boolean"},
+		"digital17":{"type":"boolean"},
+		"failsafe":{"type":"boolean"},
+		"$comment":"failsafe is true if the S.Bus receiver is in failsafe mode"
+	},
+	"required": ["proportional", "digital16", "digital17", "failsafe"]
+}
