@@ -11,7 +11,10 @@ S.BUS is the odd serial bus that Futaba (and compatible) R/C receivers and trans
 Each message is 25 bytes long. This consistes of a start byte, 16 proportional channels, 2 binary channels, and an end byte. 
 
 ## Configuration Parameters
-* SbusPort -- a text field giving the UNIX device that this progam should listen to. It defaults to ```/dev/ttyO4```, which is the DSM port on a Beaglebone Blue. 
+* SBUS_Port -- a text field giving the UNIX device that this progam should listen to. It defaults to ```/dev/ttyO4```, which is the DSM port on a Beaglebone Blue. 
+* SBUS_MaxValue -- the maximum raw value output on each channel -- scaled to 1.0f
+* SBUS_MinValue -- the maximum raw value output on each channel -- scaled to -1.0f
+
 
 ## Published Variables
 * SBUS_json -- each received frame as a STRING containing JSON with the following schema:
@@ -23,6 +26,13 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 	"properties":{
 		"proportional":{
 			"type": "array",
+			"items": {"type":"integer"},
+			"minItems":16,
+			"maxItems":16,
+			"$comment":"This stores the 16 channels of the S.Bus signal"
+		},
+		"scaled":{
+			"type": "array",
 			"items": {"type":"number"},
 			"minItems":16,
 			"maxItems":16,
@@ -33,10 +43,13 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 		"failsafe":{"type":"boolean"},
 		"$comment":"failsafe is true if the S.Bus receiver is in failsafe mode"
 	},
-	"required": ["proportional", "digital16", "digital17", "failsafe"]
+	"required": ["proportional", "scaled", digital16", "digital17", "failsafe"]
 }
 ```
 * SBUS_Ch{00-15} -- a DOUBLE containing the proportional value in microseconds. 
+* SBUS_Scaled_Ch{00-15} -- a DOUBLE containing the scaled proportional value. 
 * SBUS_Ch16 -- a BINARY containing the received value of the channel
 * SBUS_Ch17 -- a BINARY containing the received value of the channel
 * SBUS_Failsafe -- a BINARY that is true if the receiver is in failsafe mode and false otherwise. 
+* SBUS_GoodFrames -- a DOUBLE containing the number of good frames received
+* SBUS_BadFrames -- a DOUBLE containing the number of bad frames received

@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pSBUS config block
+
+ProcessConfig = pSBUS
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

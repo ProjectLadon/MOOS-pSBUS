@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# CMake & executables
+cmake_install.cmake
+Makefile
+CMakeCache.txt
+CMakeFiles
+pSBUS
+
+# MOOS log files
+examples/.LastOpenedMOOSLogDirectory
+examples/MOOSLog*

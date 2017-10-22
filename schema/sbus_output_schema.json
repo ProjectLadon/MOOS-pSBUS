@@ -10,6 +10,13 @@
 			"maxItems":16,
 			"$comment":"This stores the 16 channels of the S.Bus signal"
 		},
+		"scaled":{
+			"type": "array",
+			"items": {"type":"number", "maxValue":1.0, "minValue":-1.0},
+			"minItems":16,
+			"maxItems":16,
+			"$comment":"This stores the 16 channels of the S.Bus signal"
+		},
 		"digital16":{"type":"boolean"},
 		"digital17":{"type":"boolean"},
 		"failsafe":{"type":"boolean"},
