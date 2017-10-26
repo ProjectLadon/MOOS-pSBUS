@@ -1,8 +1,9 @@
 active: true
 derived: false
-level: 1.4
+level: 1.0
 links: []
 normative: true
 ref: ''
 reviewed: null
-text: ''
+text: |
+  This package **shall** be implemented at a MOOS Appcasting App as descibed in the (http://oceanai.mit.edu/moos-ivp/pmwiki/pmwiki.php)[MOOS-IvP wiki].

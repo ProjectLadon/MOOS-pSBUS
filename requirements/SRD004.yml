@@ -5,4 +5,5 @@ links: []
 normative: true
 ref: ''
 reviewed: null
-text: ''
+text: |
+    This packge **shall** provide a MOOS AppCast containing the following data items:
