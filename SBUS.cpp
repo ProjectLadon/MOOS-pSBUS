@@ -29,6 +29,7 @@ SBUS::SBUS()
   m_max_val = 2000;
   m_min_val = 1000;
   m_med_val = 1500;
+  m_port = "/dev/ttyO4";
 }
 
 //---------------------------------------------------------
@@ -50,11 +51,7 @@ bool SBUS::OnNewMail(MOOSMSG_LIST &NewMail)
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
     string key    = msg.GetKey();
-
-     if(key == "FOO") 
-       cout << "great!";
-
-     else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
+    if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
        reportRunWarning("Unhandled Mail: " + key);
    }
 	
@@ -276,13 +273,20 @@ void SBUS::registerVariables()
 bool SBUS::buildReport() 
 {
   m_msgs << "============================================ \n";
-  m_msgs << "File:                                        \n";
+  m_msgs << "File: pSBUS                                  \n";
   m_msgs << "============================================ \n";
 
-  ACTable actab(4);
-  actab << "Alpha | Bravo | Charlie | Delta";
+  ACTable actab(19);
+  for (int i = 1; i < 18; i++) {
+    actab << "CH" << to_string(i) << " | ";
+  }
+  actab << "CH18 | Failsafe";
   actab.addHeaderLines();
-  actab << "one" << "two" << "three" << "four";
+
+  for (int i = 0; i < 16; i++) {
+    actab << to_string(m_scaled_channels[i]);
+  }
+  actab << to_string(m_ch17) << to_string(m_ch18) << to_string(m_failsafe);
   m_msgs << actab.getFormattedString();
 
   return(true);
