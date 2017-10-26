@@ -38,18 +38,18 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 			"maxItems":16,
 			"$comment":"This stores the 16 channels of the S.Bus signal"
 		},
-		"digital16":{"type":"boolean"},
 		"digital17":{"type":"boolean"},
+		"digital18":{"type":"boolean"},
 		"failsafe":{"type":"boolean"},
 		"$comment":"failsafe is true if the S.Bus receiver is in failsafe mode"
 	},
 	"required": ["proportional", "scaled", digital16", "digital17", "failsafe"]
 }
 ```
-* SBUS_Ch{00-15} -- a DOUBLE containing the proportional value in microseconds. 
-* SBUS_Scaled_Ch{00-15} -- a DOUBLE containing the scaled proportional value. 
-* SBUS_Ch16 -- a BINARY containing the received value of the channel
+* SBUS_Channels -- a STRING containing a json array of the proportional values of all channels in microseconds. 
+* SBUS_Scaled_Channels -- a STRING containing a json array of the scaled values of all channels in a value from -1.0f to 1.0f. 
 * SBUS_Ch17 -- a BINARY containing the received value of the channel
+* SBUS_Ch18 -- a BINARY containing the received value of the channel
 * SBUS_Failsafe -- a BINARY that is true if the receiver is in failsafe mode and false otherwise. 
 * SBUS_GoodFrames -- a DOUBLE containing the number of good frames received
 * SBUS_BadFrames -- a DOUBLE containing the number of bad frames received

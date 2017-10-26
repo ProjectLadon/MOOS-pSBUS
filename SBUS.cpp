@@ -23,6 +23,12 @@ using namespace std;
 
 SBUS::SBUS()
 {
+  m_dev_fd = -1;
+  m_errorFrames = 0;
+  m_goodFrames = 0;
+  m_max_val = 2000;
+  m_min_val = 1000;
+  m_med_val = 1500;
 }
 
 //---------------------------------------------------------
@@ -30,6 +36,7 @@ SBUS::SBUS()
 
 SBUS::~SBUS()
 {
+  close(m_dev_fd);
 }
 
 //---------------------------------------------------------
@@ -70,8 +77,8 @@ bool SBUS::OnConnectToServer()
 bool SBUS::Iterate()
 {
   AppCastingMOOSApp::Iterate();
-  char buf[SBUS_BUF_LEN]
-  ssize_t bytesRead = read(devFD, buf, SBUS_BUF_LEN);
+  char buf[SBUS_BUF_LEN];
+  ssize_t bytesRead = read(m_dev_fd, buf, SBUS_BUF_LEN);
 
   if (bytesRead > 0) {
     for (int i = 0; i < bytesRead; i++) m_buf.push_back(buf[i]); // we have to do this in order to copy /0 correctly
@@ -79,47 +86,96 @@ bool SBUS::Iterate()
     memset(buf, 0, SBUS_BUF_LEN);
   }
 
-  if (buf.size() >= SBUS_BUF_LEN) {
-    if ((buf[0] != SBUS_STARTBYTE) || (buf[(SBUS_BUF_LEN - 1)] != SBUS_ENDBYTE)) {
-      cerr << "Received invalid frame: [" << buf << "]";
-      buf.clear();
+  if (m_buf.size() >= SBUS_BUF_LEN) {
+    if ((m_buf[0] != SBUS_STARTBYTE) || (m_buf[(SBUS_BUF_LEN - 1)] != SBUS_ENDBYTE)) {
+      cerr << "Received invalid frame: [" << m_buf << "]";
+      m_buf.clear();
       m_errorFrames++;
       m_valid = false;
       return false;
     } else {
       m_goodFrames++;
       m_valid = true;
-      setLastInputTime();
 
-      m_raw_channels[0]  = ((buf[1]    |buf[2]<<8)         & 0x07FF);
-      m_raw_channels[1]  = ((buf[2]>>3 |buf[3]<<5)         & 0x07FF);
-      m_raw_channels[2]  = ((buf[3]>>6 |buf[4]<<2 |buf[5]<<10)   & 0x07FF);
-      m_raw_channels[3]  = ((buf[5]>>1 |buf[6]<<7)         & 0x07FF);
-      m_raw_channels[4]  = ((buf[6]>>4 |buf[7]<<4)         & 0x07FF);
-      m_raw_channels[5]  = ((buf[7]>>7 |buf[8]<<1 |buf[9]<<9)    & 0x07FF);
-      m_raw_channels[6]  = ((buf[9]>>2 |buf[10]<<6)          & 0x07FF);
-      m_raw_channels[7]  = ((buf[10]>>5|buf[11]<<3)                & 0x07FF);
-      m_raw_channels[8]  = ((buf[12]   |buf[13]<<8)                & 0x07FF);
-      m_raw_channels[9]  = ((buf[13]>>3|buf[14]<<5)                & 0x07FF);
-      m_raw_channels[10] = ((buf[14]>>6|buf[15]<<2|buf[16]<<10) & 0x07FF);
-      m_raw_channels[11] = ((buf[16]>>1|buf[17]<<7)                & 0x07FF);
-      m_raw_channels[12] = ((buf[17]>>4|buf[18]<<4)                & 0x07FF);
-      m_raw_channels[13] = ((buf[18]>>7|buf[19]<<1|buf[20]<<9)  & 0x07FF);
-      m_raw_channels[14] = ((buf[20]>>2|buf[21]<<6)                & 0x07FF);
-      m_raw_channels[15] = ((buf[21]>>5|buf[22]<<3)                & 0x07FF);
+      m_raw_channels[0]  = ((m_buf[1]    |m_buf[2]<<8)         & 0x07FF);
+      m_raw_channels[1]  = ((m_buf[2]>>3 |m_buf[3]<<5)         & 0x07FF);
+      m_raw_channels[2]  = ((m_buf[3]>>6 |m_buf[4]<<2 |m_buf[5]<<10)   & 0x07FF);
+      m_raw_channels[3]  = ((m_buf[5]>>1 |m_buf[6]<<7)         & 0x07FF);
+      m_raw_channels[4]  = ((m_buf[6]>>4 |m_buf[7]<<4)         & 0x07FF);
+      m_raw_channels[5]  = ((m_buf[7]>>7 |m_buf[8]<<1 |m_buf[9]<<9)    & 0x07FF);
+      m_raw_channels[6]  = ((m_buf[9]>>2 |m_buf[10]<<6)          & 0x07FF);
+      m_raw_channels[7]  = ((m_buf[10]>>5|m_buf[11]<<3)                & 0x07FF);
+      m_raw_channels[8]  = ((m_buf[12]   |m_buf[13]<<8)                & 0x07FF);
+      m_raw_channels[9]  = ((m_buf[13]>>3|m_buf[14]<<5)                & 0x07FF);
+      m_raw_channels[10] = ((m_buf[14]>>6|m_buf[15]<<2|m_buf[16]<<10) & 0x07FF);
+      m_raw_channels[11] = ((m_buf[16]>>1|m_buf[17]<<7)                & 0x07FF);
+      m_raw_channels[12] = ((m_buf[17]>>4|m_buf[18]<<4)                & 0x07FF);
+      m_raw_channels[13] = ((m_buf[18]>>7|m_buf[19]<<1|m_buf[20]<<9)  & 0x07FF);
+      m_raw_channels[14] = ((m_buf[20]>>2|m_buf[21]<<6)                & 0x07FF);
+      m_raw_channels[15] = ((m_buf[21]>>5|m_buf[22]<<3)                & 0x07FF);
 
-      ((buf[23])      & 0x0001) ? m_ch17 = true: m_ch17 = false;
-      ((buf[23] >> 1) & 0x0001) ? m_ch18 = true: m_ch18 = false;
+      ((m_buf[23])      & 0x0001) ? m_ch17 = true: m_ch17 = false;
+      ((m_buf[23] >> 1) & 0x0001) ? m_ch18 = true: m_ch18 = false;
 
-      if ((buf[23] >> 3) & 0x0001) {
+      if ((m_buf[23] >> 3) & 0x0001) {
         m_failsafe = true;
       } else {
         m_failsafe = false;
       }
-      buf.clear();      
+      m_buf.clear();
+
+      for (int i = 0; i < RC_CHANNEL_COUNT; i++) {
+        m_scaled_channels[i] = ((float)((int)m_raw_channels[i] - m_med_val))/(m_max_val - m_med_val); 
+      }
     }
   }
 
+  if (m_valid) {
+    std::string chans = "[";
+    std::string scaled_chans = "[";
+    for (int i = 0; i < RC_CHANNEL_COUNT; i++) {
+      if (i != 0) {
+        chans += ", ";
+        scaled_chans += ", ";
+      }
+      chans += to_string(m_raw_channels[i]);
+      scaled_chans += to_string(m_scaled_channels[i]);
+    }
+    chans = "]";
+    scaled_chans = "]";
+    m_json_output = "{\"proportional\":";
+    m_json_output += chans;
+    m_json_output += ",\"scaled\":";
+    m_json_output += scaled_chans;
+    m_json_output += ",\"digital17\":";
+    if (m_ch17) {
+      m_json_output += "true";
+    } else {
+      m_json_output += "false";
+    }
+    m_json_output += ",\"digital18\":";
+    if (m_ch18) {
+      m_json_output += "true";
+    } else {
+      m_json_output += "false";
+    }
+    m_json_output += ",\"failsafe\":";
+    if (m_failsafe) {
+      m_json_output += "true";
+    } else {
+      m_json_output += "false";
+    }
+    m_json_output += "}";
+    Notify("SBUS_Channels", chans);
+    Notify("SBUS_Scaled_Channels", scaled_chans);
+    Notify("SBUS_Ch17", m_ch17);
+    Notify("SBUS_Ch18", m_ch18);
+  } else {
+    m_failsafe = false;
+  }
+  Notify("SBUS_Failsafe", m_failsafe);
+  Notify("SBUS_GoodFrames", m_goodFrames);
+  Notify("SBUS_BadFrames", m_errorFrames);
 
   AppCastingMOOSApp::PostReport();
   return(true);
@@ -151,11 +207,11 @@ bool SBUS::OnStartUp()
       handled = true;
     }
     else if(param == "SBUS_MAXVALUE") {
-      this->m_max_value = atoi(value);
+      this->m_max_val = atoi(value.c_str());
       handled = true;
     }
     else if(param == "SBUS_MINVALUE") {
-      this->m_max_value = atoi(value);
+      this->m_min_val = atoi(value.c_str());
       handled = true;
     }
 
@@ -163,6 +219,8 @@ bool SBUS::OnStartUp()
       reportUnhandledConfigWarning(orig);
 
   }
+
+  m_med_val = (m_max_val + m_min_val)/2;
 
   // open up the serial port -- it's distinctly C-ish
   struct termios2 attrib;

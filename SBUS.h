@@ -36,22 +36,23 @@ class SBUS : public AppCastingMOOSApp
    std::string packJSON();
 
  private: // Configuration variables
- 	std::string 	m_port;
- 	uint16_t		m_max_val;
- 	uint16_t		m_min_val;
+ 	std::string     m_port;
+ 	uint16_t        m_max_val;
+ 	uint16_t        m_min_val;
+ 	uint16_t        m_med_val;
 
  private: // State variables
- 	std::string 			m_json_output;
- 	std::string 			m_buf;
- 	int 					m_dev_fd = -1;
-	std::vector<uint16_t> 	m_raw_channels { RC_CHANNEL_COUNT };
-	std::vector<double> 	m_scaled_channels { RC_CHANNEL_COUNT };
-	int 					m_errorFrames = 0;
-	int 					m_goodFrames = 0;
- 	bool 					m_ch17;
- 	bool 					m_ch18;
- 	bool 					m_failsafe;
- 	bool					m_valid; 
+ 	std::string            m_json_output;
+ 	std::string            m_buf;
+ 	int                    m_dev_fd;
+	std::vector<uint16_t>  m_raw_channels { RC_CHANNEL_COUNT };
+	std::vector<double>    m_scaled_channels { RC_CHANNEL_COUNT };
+	int                    m_errorFrames;
+	int                    m_goodFrames;
+ 	bool                   m_ch17;
+ 	bool                   m_ch18;
+ 	bool                   m_failsafe;
+ 	bool                   m_valid; 
 };
 
 #endif 
