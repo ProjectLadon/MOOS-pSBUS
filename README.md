@@ -46,8 +46,8 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 	"required": ["proportional", "scaled", digital16", "digital17", "failsafe"]
 }
 ```
-* SBUS_Channels -- a STRING containing a json array of the proportional values of all channels in microseconds. 
-* SBUS_Scaled_Channels -- a STRING containing a json array of the scaled values of all channels in a value from -1.0f to 1.0f. 
+* SBUS_Channels -- a STRING containing a json array of the proportional values of the first sixteen channels in microseconds. 
+* SBUS_Scaled_Channels -- a STRING containing a json array of the scaled values of the first sixteen channels in a range from -1.0f to 1.0f. 
 * SBUS_Ch17 -- a BINARY containing the received value of the channel
 * SBUS_Ch18 -- a BINARY containing the received value of the channel
 * SBUS_Failsafe -- a BINARY that is true if the receiver is in failsafe mode and false otherwise. 
