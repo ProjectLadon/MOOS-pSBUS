@@ -277,10 +277,10 @@ bool SBUS::buildReport()
   m_msgs << "============================================ \n";
 
   ACTable actab(19);
-  for (int i = 1; i < 18; i++) {
+  for (int i = 1; i < 19; i++) {
     actab << "CH" << to_string(i) << " | ";
   }
-  actab << "CH18 | Failsafe";
+  actab << "Failsafe";
   actab.addHeaderLines();
 
   for (int i = 0; i < 16; i++) {

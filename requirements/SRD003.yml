@@ -8,4 +8,11 @@ reviewed: null
 text: |
   This package **shall** maintain and publish the following outputs, in addition to the goodFrame and badFrame counters mentioned in SRD002. 
 
-  * **SBUS_json** -- A JSON object containing all of the output data
+  * **SBUS_json** *shall* be a JSON object containing all of the output data
+  * **SBUS_Channels** *shall* be a STRING containing a JSON array of the sixteen proportional channels, expressed in microseconds. 
+  * **SBUS_Scaled_Channels** *shall* be a STRING containing a JSON array of the sixteen proportional channels scaled to the range -1.0f to 1.0f, inclusive.
+  * **SBUS_Ch17** *shall* be a BINARY containing the state of digital cahnnel 17.
+  * **SBUS_Ch18** *shall* be a BINARY containing the state of digital cahnnel 18.
+  * **SBUS_Failsafe** *shall* be a BINARY that is true if the R/C receiver is either not receiving a signal or out of range of the transmitter.
+  * **SBUS_GoodFrame** *shall* be a DOUBLE that reports the number of good SBUS frames received. 
+  * **SBUS_BadFrame** *shall* be a DOUBLE that reports the number of bad SBUS frames received.

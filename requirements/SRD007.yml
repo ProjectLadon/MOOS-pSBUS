@@ -3,6 +3,9 @@ derived: false
 level: 1.6
 links: []
 normative: true
-ref: ''
+ref: 'SRD003.yml'
 reviewed: null
-text: ''
+text: |
+    The scaled channels **shall** be scaled to values of -1.0f to 1.0f where:
+    * -1.0f **shall** be equal to the SBUS_MinValue parameter set in the configuration file. This parameter **shall** default to 1000 microseconds if it is not present.
+    * 1.0f **shall** be equal to the SBUS_MaxValue parameter set in the configuration file. This parameter **shall** default to 2000 microseconds if it is not present.

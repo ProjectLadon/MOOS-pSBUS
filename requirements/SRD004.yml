@@ -3,7 +3,7 @@ derived: false
 level: 1.3
 links: []
 normative: true
-ref: ''
+ref: 'SRD003.yml'
 reviewed: null
 text: |
-    This packge **shall** provide a MOOS AppCast containing the following data items:
+    This packge **shall** provide a MOOS AppCast containing the scaled values of all sixteen proportional channels, both digital channels, and the failsafe signal. 
