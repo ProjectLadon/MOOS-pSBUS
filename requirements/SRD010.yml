@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.3
+links: []
+normative: true
+ref: ''
+reviewed: 87078d7cd66f39c32bfdabeeb2da657a
+text: |
+  The highest bit of each byte **shall** be transmited first.

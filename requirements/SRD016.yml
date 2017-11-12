@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.3
+links: []
+normative: true
+ref: ''
+reviewed: 2a9667072e4ea735e704ecb6be180928
+text: |
+  Bit 5 **shall** be the lost frame flag

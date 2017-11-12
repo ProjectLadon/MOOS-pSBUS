@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.5
+links: []
+normative: true
+ref: ''
+reviewed: a646eae11131e231e2f486e72e851fe7
+text: |
+  Bytes 1 through 22 **shall** be divided into 16 11-bit fields. Each field **shall** be a big endian unsigned integer representing the channel position in microseconds.

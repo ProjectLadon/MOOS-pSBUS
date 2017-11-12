@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.1
+links: []
+normative: true
+ref: ''
+reviewed: 06f44c9c9043096258d34d3779d1ce1a
+text: |
+  Bit 7 **shall** be digital channel 17

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.2
+links: []
+normative: true
+ref: ''
+reviewed: fc7d9e779fb3c0e8d6c23f9f7a03fa0e
+text: |
+  The stream **shall** be divided into 25 byte (200 bit) packets.

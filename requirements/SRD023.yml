@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.3.3
+links: []
+normative: true
+ref: ''
+reviewed: 5d24ff142e4a3ddfe8c616bb5f4d518a
+text: |
+  **SBUS_Scaled_Channels** *shall* be a STRING containing a JSON array of the sixteen proportional channels scaled to the range -1.0f to 1.0f, inclusive.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.1
+links: []
+normative: true
+ref: ''
+reviewed: 0da27ea76e8a8e8162df0929c17d3e19
+text: |
+  **Serial Settings**: 100000, 8E2. Note that the native stream is inverted; this package **shall** assume that the inversion is done in external hardware.

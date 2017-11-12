@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.6.2
+links: []
+normative: true
+ref: ''
+reviewed: 358d1798b9c4e571731cf6a07d71cafa
+text: |
+  1.0f **shall** be equal to the SBUS_MaxValue parameter set in the configuration file. This parameter **shall** default to 2000 microseconds if it is not present.

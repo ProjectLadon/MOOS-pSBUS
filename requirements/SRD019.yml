@@ -1,0 +1,10 @@
+active: true
+derived: false
+level: 1.2.1
+links:
+- SRD001: d4efaeb0d3d8e70e9c007e5f34454d38
+normative: true
+ref: ''
+reviewed: 4982fb43bca032f03e69cbb01f4f147f
+text: |
+  The goodFrame counter **shall** be incremented on the receipt of any frame that conforms to SRD001.

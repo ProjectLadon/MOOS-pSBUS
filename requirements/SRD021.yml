@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.3.1
+links: []
+normative: true
+ref: ''
+reviewed: ac9a78b2413a16e4f42e0d3d31bf00c2
+text: |
+  **SBUS_json** *shall* be a JSON object containing all of the output data.

@@ -1,9 +1,9 @@
 active: true
 derived: false
-level: 1.2
+level: 1.2.0
 links: []
 normative: true
-ref: 'SRD001.yml'
-reviewed: null
+ref: ''
+reviewed: ae5b5bb781878ab4386c163c75beaf15
 text: |
-  This package **shall** maintain and publish goodFrame and badFrame counters. The goodFrame counter **shall** be incremented on the receipt of any frame that conforms to SRD001. The badFrame counter **shall** be incremented on the receipt of any frame or partial frame that does not conform.
+  This package **shall** maintain and publish goodFrame and badFrame counters.

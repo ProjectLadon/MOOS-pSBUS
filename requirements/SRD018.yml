@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.5
+links: []
+normative: true
+ref: ''
+reviewed: 4283a53f8cf44be32ef11986d0c9ee2b
+text: |
+  Bits 0-3 **shall** be ignored.

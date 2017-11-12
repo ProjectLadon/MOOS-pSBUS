@@ -1,23 +1,9 @@
 active: true
 derived: false
-level: 1.1
+level: 1.1.0
 links: []
 normative: true
 ref: ''
-reviewed: null
+reviewed: d4efaeb0d3d8e70e9c007e5f34454d38
 text: |
-    This package *shall** read and interpret an SBUS serial stream. A valid SBUS stream **shall** have the following properties:
-
-    * **Serial Settings**: 100000, 8E2. Note that the native stream is inverted; this package **shall** assume that the inversion is done in external hardware. 
-    * The stream **shall** be divided into 25 byte (200 bit) packets.
-    * The highest bit of each byte **shall** be transmited first
-    * Each valid packet **shall** begin with 0x0f and end with 0x00.
-    * Bytes 1 through 22 **shall** be divided into 16 11-bit fields. Each field **shall** be a big endian unsigned integer representing the channel position in microseconds. 
-    * Byte 23 **shall** be a flag byte. 
-      * Bit 7 **shall** be digital channel 17
-      * Bit 6 **shall** be digital channel 18
-      * Bit 5 **shall** be the lost frame flag
-      * Bit 4 **shall** be the failsafe flag (true if receiver connection lost)
-      * Bits 0-3 **shall** be ignored.
-
-
+  This package *shall** read and interpret an SBUS serial stream. A valid SBUS stream **shall** have the following properties:

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.6.1
+links: []
+normative: true
+ref: ''
+reviewed: c640e2ecea8e75a74c8daba05dac9ab4
+text: |
+  -1.0f **shall** be equal to the SBUS_MinValue parameter set in the configuration file. This parameter **shall** default to 1000 microseconds if it is not present.

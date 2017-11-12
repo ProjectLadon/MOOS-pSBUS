@@ -1,0 +1,10 @@
+active: true
+derived: false
+level: 1.2.2
+links:
+- SRD001: d4efaeb0d3d8e70e9c007e5f34454d38
+normative: true
+ref: ''
+reviewed: a2d64712f55600a6493e0f4032862883
+text: |
+  The badFrame counter **shall** be incremented on the receipt of any frame or partial frame that does not conform.

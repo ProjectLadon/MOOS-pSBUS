@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.3.6
+links: []
+normative: true
+ref: ''
+reviewed: 665d03866f9deb18d8ade87d1f97fd76
+text: |
+  **SBUS_Failsafe** *shall* be a BINARY that is true if the R/C receiver is either not receiving a signal or out of range of the transmitter.

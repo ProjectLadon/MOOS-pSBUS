@@ -4,6 +4,6 @@ level: 1.5
 links: []
 normative: true
 ref: ''
-reviewed: null
+reviewed: a7972f1c9debc4addca3767778cdc8c4
 text: |
-    This package **shall** listen for the SBUS stream on a port defined by the SBUS_Port configuration option. This option **shall** default to /dev/ttyO4 if it is not present.
+  This package **shall** listen for the SBUS stream on a port defined by the SBUS_Port configuration option. This option **shall** default to /dev/ttyO4 if it is not present.

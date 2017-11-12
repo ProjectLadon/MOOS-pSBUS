@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.0
+links: []
+normative: true
+ref: ''
+reviewed: cc80f406be1c171a7b66fb2c8090d5b5
+text: |
+  Byte 23 **shall** be a flag byte.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.4
+links: []
+normative: true
+ref: ''
+reviewed: 05ea4acf5b485b76483e466491c2871a
+text: |
+  Bit 4 **shall** be the failsafe flag (true if receiver connection lost)

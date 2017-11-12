@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.3.8
+links: []
+normative: true
+ref: ''
+reviewed: bf7adadcc0b987ff86ca8b654d051c59
+text: |
+  **SBUS_BadFrame** *shal* be a DOUBLE that reports the number of bad SBUS frames received.

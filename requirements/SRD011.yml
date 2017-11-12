@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.4
+links: []
+normative: true
+ref: ''
+reviewed: a9d55f2be91cab060e7ddf7e86c9e3e9
+text: |
+  Each valid packet **shall** begin with 0x0f and end with 0x00.

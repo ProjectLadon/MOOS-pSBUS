@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.1.6.2
+links: []
+normative: true
+ref: ''
+reviewed: 3ec785fc00773ff3e4615ca7dbffde2d
+text: |
+  Bit 6 **shall** be digital channel 18
