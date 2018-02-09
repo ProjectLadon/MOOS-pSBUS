@@ -15,44 +15,45 @@
 #define SBUS_STARTBYTE		(0x0f)
 #define SBUS_ENDBYTE		(0x00)
 
-class SBUS : public AppCastingMOOSApp
-{
- public:
-   SBUS();
-   ~SBUS();
+class sbustest; // Forward declaration for test hookup
 
- protected: // Standard MOOSApp functions to overload  
-   bool OnNewMail(MOOSMSG_LIST &NewMail);
-   bool Iterate();
-   bool OnConnectToServer();
-   bool OnStartUp();
+class SBUS : public AppCastingMOOSApp {
+    friend sbustest;
+    public:
+        SBUS();
+        ~SBUS();
 
- protected: // Standard AppCastingMOOSApp function to overload 
-   bool buildReport();
+    protected: // Standard MOOSApp functions to overload
+        bool OnNewMail(MOOSMSG_LIST &NewMail);
+        bool Iterate();
+        bool OnConnectToServer();
+        bool OnStartUp();
 
- protected:
-   void registerVariables();
-   bool readInputs();
-   std::string packJSON();
+        // Standard AppCastingMOOSApp function to overload
+        bool buildReport();
 
- private: // Configuration variables
- 	std::string     m_port;
- 	uint16_t        m_max_val;
- 	uint16_t        m_min_val;
- 	uint16_t        m_med_val;
+        void registerVariables();
+        bool readInputs();
+        std::string packJSON();
 
- private: // State variables
- 	std::string            m_json_output;
- 	std::string            m_buf;
- 	int                    m_dev_fd;
-	std::vector<uint16_t>  m_raw_channels { RC_CHANNEL_COUNT };
-	std::vector<double>    m_scaled_channels { RC_CHANNEL_COUNT };
-	int                    m_errorFrames;
-	int                    m_goodFrames;
- 	bool                   m_ch17;
- 	bool                   m_ch18;
- 	bool                   m_failsafe;
- 	bool                   m_valid; 
+        // Configuration variables
+        std::string     m_port;
+        uint16_t        m_max_val;
+        uint16_t        m_min_val;
+        uint16_t        m_med_val;
+
+        // State variables
+        std::string            m_json_output;
+        std::string            m_buf;
+        int                    m_dev_fd;
+        std::vector<uint16_t>  m_raw_channels { RC_CHANNEL_COUNT };
+        std::vector<double>    m_scaled_channels { RC_CHANNEL_COUNT };
+        int                    m_errorFrames;
+        int                    m_goodFrames;
+    	bool                   m_ch17;
+    	bool                   m_ch18;
+    	bool                   m_failsafe;
+    	bool                   m_valid;
 };
 
-#endif 
+#endif

@@ -54,7 +54,7 @@ bool SBUS::OnNewMail(MOOSMSG_LIST &NewMail)
     if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
        reportRunWarning("Unhandled Mail: " + key);
    }
-	
+
    return(true);
 }
 
@@ -122,7 +122,7 @@ bool SBUS::Iterate()
       m_buf.clear();
 
       for (int i = 0; i < RC_CHANNEL_COUNT; i++) {
-        m_scaled_channels[i] = ((float)((int)m_raw_channels[i] - m_med_val))/(m_max_val - m_med_val); 
+        m_scaled_channels[i] = ((float)((int)m_raw_channels[i] - m_med_val))/(m_max_val - m_med_val);
       }
     }
   }
@@ -236,14 +236,14 @@ bool SBUS::OnStartUp()
   attrib.c_cflag |= BOTHER;
   attrib.c_ispeed = 100000;
   attrib.c_ospeed = 100000;
-  
+
   // set the port to raw mode
   attrib.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-  attrib.c_cflag &= ~(CSIZE); 
+  attrib.c_cflag &= ~(CSIZE);
   attrib.c_cflag |= (PARENB | CSTOPB);    // even parity, two stop bits
   attrib.c_cflag |= (CLOCAL | CREAD | CS8); // ignore modem status lines, enable receiver, 8 bits per byte
   attrib.c_iflag &= ~(IXON | IXOFF | IXANY);  // turn off all flow control
-  attrib.c_iflag &= ~(ICRNL);         // turn off line ending translation         
+  attrib.c_iflag &= ~(ICRNL);         // turn off line ending translation
   attrib.c_oflag &= ~(OPOST);         // turn off post processing of output
   attrib.c_cc[VMIN] = 0;            // this sets the timeouts for the read() operation to minimum
   attrib.c_cc[VTIME] = 1;
@@ -252,8 +252,8 @@ bool SBUS::OnStartUp()
     close(m_dev_fd);
     return false;
   }
-  
-  registerVariables();	
+
+  registerVariables();
   return(true);
 }
 
@@ -270,28 +270,43 @@ void SBUS::registerVariables()
 //------------------------------------------------------------
 // Procedure: buildReport()
 
-bool SBUS::buildReport() 
-{
-  m_msgs << "============================================ \n";
-  m_msgs << "File: pSBUS                                  \n";
-  m_msgs << "============================================ \n";
+bool SBUS::buildReport() {
+    m_msgs << "============================================ \n";
+    m_msgs << "File: pSBUS                                  \n";
+    m_msgs << "============================================ \n";
 
-  ACTable actab(19);
-  for (int i = 1; i < 19; i++) {
-    actab << "CH" << to_string(i) << " | ";
-  }
-  actab << "Failsafe";
-  actab.addHeaderLines();
+    ACTable lowchans(8);
+    ACTable highchans(8);
+    ACTable bools(3);
 
-  for (int i = 0; i < 16; i++) {
-    actab << to_string(m_scaled_channels[i]);
-  }
-  actab << to_string(m_ch17) << to_string(m_ch18) << to_string(m_failsafe);
-  m_msgs << actab.getFormattedString();
+    for (int i = 0; i < 8; i++) {
+        string entry = "CH" + to_string(i);
+        lowchans << entry;
+    }
+    for (int i = 8; i < 16; i++) {
+        string entry = "CH" + to_string(i);
+        highchans << entry;
+    }
+    bools << "CH16 | CH17 | Failsafe";
+    lowchans.addHeaderLines();
+    highchans.addHeaderLines();
+    bools.addHeaderLines();
 
-  return(true);
+    for (int i = 0; i < 8; i++) {
+        lowchans << to_string(m_raw_channels[i]);
+        highchans << to_string(m_raw_channels[i+8]);
+    }
+    for (int i = 0; i < 8; i++) {
+        lowchans << to_string(m_scaled_channels[i]);
+        highchans << to_string(m_scaled_channels[i+8]);
+    }
+    bools << to_string(m_ch17);
+    bools << to_string(m_ch18);
+    bools << to_string(m_failsafe);
+
+    m_msgs << lowchans.getFormattedString();
+    m_msgs << highchans.getFormattedString();
+    m_msgs << bools.getFormattedString();
+
+    return(true);
 }
-
-
-
-
