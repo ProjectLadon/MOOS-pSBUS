@@ -77,15 +77,16 @@ bool SBUS::Iterate()
   char buf[SBUS_BUF_LEN];
   ssize_t bytesRead = read(m_dev_fd, buf, SBUS_BUF_LEN);
 
-  if (bytesRead > 0) {
+  while (bytesRead > 0) {
     for (int i = 0; i < bytesRead; i++) m_buf.push_back(buf[i]); // we have to do this in order to copy /0 correctly
-    cerr << "Read " << to_string(bytesRead) << " bytes into m_buf: [" << m_buf << "]";
+    //cerr << "Read " << to_string(bytesRead) << " bytes into m_buf: [" << m_buf << "]" << endl;
     memset(buf, 0, SBUS_BUF_LEN);
+    bytesRead = read(m_dev_fd, buf, SBUS_BUF_LEN);
   }
 
-  if (m_buf.size() >= SBUS_BUF_LEN) {
-    if ((m_buf[0] != SBUS_STARTBYTE) || (m_buf[(SBUS_BUF_LEN - 1)] != SBUS_ENDBYTE)) {
-      cerr << "Received invalid frame: [" << m_buf << "]";
+  if (m_buf.size() >= m_buf.rfind(SBUS_STARTBYTE) + SBUS_BUF_LEN) {
+    if (m_buf[(m_buf.find(SBUS_STARTBYTE) + (SBUS_BUF_LEN - 1))] != SBUS_ENDBYTE) {
+      cerr << "Received invalid frame: [" << m_buf << "]" << endl;
       m_buf.clear();
       m_errorFrames++;
       m_valid = false;
@@ -107,7 +108,7 @@ bool SBUS::Iterate()
       m_raw_channels[10] = ((m_buf[14]>>6|m_buf[15]<<2|m_buf[16]<<10) & 0x07FF);
       m_raw_channels[11] = ((m_buf[16]>>1|m_buf[17]<<7)                & 0x07FF);
       m_raw_channels[12] = ((m_buf[17]>>4|m_buf[18]<<4)                & 0x07FF);
-      m_raw_channels[13] = ((m_buf[18]>>7|m_buf[19]<<1|m_buf[20]<<9)  & 0x07FF);
+      m_raw_channels[13] = ((m_buf[18]>>7|m_buf[19]<<1|m_buf[20]<<9)  & 0x7FF);
       m_raw_channels[14] = ((m_buf[20]>>2|m_buf[21]<<6)                & 0x07FF);
       m_raw_channels[15] = ((m_buf[21]>>5|m_buf[22]<<3)                & 0x07FF);
 
@@ -137,6 +138,8 @@ bool SBUS::Iterate()
       }
       chans += to_string(m_raw_channels[i]);
       scaled_chans += to_string(m_scaled_channels[i]);
+      Notify("SBUS_Ch" + to_string(i + 1) + "_RAW", m_raw_channels[i]);
+      Notify("SBUS_Ch" + to_string(i + 1) + "_SCALED", m_scaled_channels[i]);
     }
     chans = "]";
     scaled_chans = "]";
@@ -248,7 +251,7 @@ bool SBUS::OnStartUp()
   attrib.c_cc[VMIN] = 0;            // this sets the timeouts for the read() operation to minimum
   attrib.c_cc[VTIME] = 1;
   if (ioctl(m_dev_fd, TCSETS2, &attrib) < 0) {
-    cerr << "Failed to configure RC serial port " << m_port;
+    cerr << "Failed to configure RC serial port " << m_port << endl;
     close(m_dev_fd);
     return false;
   }
@@ -277,17 +280,17 @@ bool SBUS::buildReport() {
 
     ACTable lowchans(8);
     ACTable highchans(8);
-    ACTable bools(3);
+    ACTable bools(5);
 
     for (int i = 0; i < 8; i++) {
-        string entry = "CH" + to_string(i);
+        string entry = "CH" + to_string(i+1);
         lowchans << entry;
     }
     for (int i = 8; i < 16; i++) {
-        string entry = "CH" + to_string(i);
+        string entry = "CH" + to_string(i+1);
         highchans << entry;
     }
-    bools << "CH16 | CH17 | Failsafe";
+    bools << "CH17 | CH18 | Failsafe | Good Frames | Bad Frames";
     lowchans.addHeaderLines();
     highchans.addHeaderLines();
     bools.addHeaderLines();
@@ -300,13 +303,27 @@ bool SBUS::buildReport() {
         lowchans << to_string(m_scaled_channels[i]);
         highchans << to_string(m_scaled_channels[i+8]);
     }
-    bools << to_string(m_ch17);
-    bools << to_string(m_ch18);
-    bools << to_string(m_failsafe);
+    if (m_ch17) {
+	bools << "true";
+    } else {
+	bools << "false";
+    }
+    if (m_ch18) {
+ 	bools << "true";
+    } else {
+	bools << "false";
+    }
+    if (m_failsafe) {
+	bools << "true";
+    } else {
+	bools << "false";
+    }
+    bools << to_string(m_goodFrames);
+    bools << to_string(m_errorFrames);
 
-    m_msgs << lowchans.getFormattedString();
-    m_msgs << highchans.getFormattedString();
-    m_msgs << bools.getFormattedString();
+    m_msgs << lowchans.getFormattedString() << endl << endl;
+    m_msgs << highchans.getFormattedString() << endl << endl;
+    m_msgs << bools.getFormattedString() << endl;
 
     return(true);
 }
