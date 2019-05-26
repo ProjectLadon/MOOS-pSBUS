@@ -33,6 +33,7 @@ SBUS::SBUS() {
         m_scaled_channels[i] = 0.0;
         m_raw_channels[i] = 0;
     }
+    cerr << "SBUS object created" << endl;
 }
 
 //---------------------------------------------------------
@@ -189,12 +190,16 @@ bool SBUS::Iterate() {
 //            happens before connection is open
 
 bool SBUS::OnStartUp() {
+    cerr << "Configuring pSBUS..." << endl;
     AppCastingMOOSApp::OnStartUp();
+    cerr << "Performed automatic configuration for pSBUS..." << endl;
 
     STRING_LIST sParams;
     m_MissionReader.EnableVerbatimQuoting(false);
-    if(!m_MissionReader.GetConfiguration(GetAppName(), sParams))
+    if(!m_MissionReader.GetConfiguration(GetAppName(), sParams)) {
         reportConfigWarning("No config block found for " + GetAppName());
+    }
+    cerr << "Read in SBUS configuration" << endl;
 
     STRING_LIST::iterator p;
     for(p=sParams.begin(); p!=sParams.end(); p++) {
@@ -205,12 +210,15 @@ bool SBUS::OnStartUp() {
 
         bool handled = false;
         if(param == "SBUS_PORT") {
+            cerr << "Setting port to " << value << endl;
             this->m_port = value;
             handled = true;
         } else if(param == "SBUS_MAXVALUE") {
+            cerr << "Setting max value to " << value << endl;
             this->m_max_val = atoi(value.c_str());
             handled = true;
         } else if(param == "SBUS_MINVALUE") {
+            cerr << "Setting min value to " << value << endl;
             this->m_min_val = atoi(value.c_str());
             handled = true;
         }

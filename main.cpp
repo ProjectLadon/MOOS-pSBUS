@@ -35,18 +35,18 @@ int main(int argc, char *argv[])
     else if(i==2)
       run_command = argi;
   }
-  
+
   if(mission_file == "")
     showHelpAndExit();
 
   cout << termColor("green");
   cout << "pSBUS launching as " << run_command << endl;
+  cout << "Using mission file " << mission_file << endl;
   cout << termColor() << endl;
 
   SBUS SBUS;
 
   SBUS.Run(run_command.c_str(), mission_file.c_str());
-  
+
   return(0);
 }
-
