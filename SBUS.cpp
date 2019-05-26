@@ -30,8 +30,8 @@ SBUS::SBUS() {
     m_med_val = 1500;
     m_port = "/dev/ttyO4";
     for (int i = 0; i < RC_CHANNEL_COUNT; i++) {
-        m_scaled_channels[i] = 0.0;
-        m_raw_channels[i] = 0;
+        m_scaled_channels.push_back(0.0);
+        m_raw_channels.push_back(0);
     }
     cerr << "SBUS object created" << endl;
 }
