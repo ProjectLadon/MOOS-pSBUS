@@ -48,8 +48,8 @@ Each message is 25 bytes long. This consistes of a start byte, 16 proportional c
 ```
 * SBUS_Channels -- a STRING containing a json array of the proportional values of the first sixteen channels in microseconds.
 * SBUS_Scaled_Channels -- a STRING containing a json array of the scaled values of the first sixteen channels in a range from -1.0f to 1.0f.
-* SBUS_Ch17 -- a BINARY containing the received value of the channel
-* SBUS_Ch18 -- a BINARY containing the received value of the channel
-* SBUS_Failsafe -- a BINARY that is true if the receiver is in failsafe mode and false otherwise.
+* SBUS_Ch17 -- a BINARY one byte long containing the received value of the channel (either zero or 1)
+* SBUS_Ch18 -- a BINARY one byte long containing the received value of the channel (either zero or 1)
+* SBUS_Failsafe -- a BINARY one byte long that is 1 if the receiver is in failsafe mode and 0 otherwise.
 * SBUS_GoodFrames -- a DOUBLE containing the number of good frames received
 * SBUS_BadFrames -- a DOUBLE containing the number of bad frames received
