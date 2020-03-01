@@ -233,11 +233,11 @@ bool SBUS::OnStartUp() {
     struct termios2 attrib;
     m_dev_fd = open(m_port.c_str(), O_RDWR | O_NONBLOCK | O_NOCTTY);
     if (m_dev_fd < 0) {
-        cerr << "Failed to open RC serial port " << m_port;
+        cerr << "Failed to open RC serial port " << m_port << endl;
         return false;
     }
     if (ioctl(m_dev_fd, TCGETS2, &attrib) < 0) {
-        cerr << "Failed to open RC serial port " << m_port;
+        cerr << "Failed to open RC serial port " << m_port << endl;
         return false;
     }
 

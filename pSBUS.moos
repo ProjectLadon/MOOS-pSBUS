@@ -3,7 +3,11 @@
 
 ProcessConfig = pSBUS
 {
-   AppTick   = 4
-   CommsTick = 4
-}
 
+	AppTick = 20
+	CommsTick = 5
+
+	SBUS_Port 	= /dev/ttyO5
+	SBUS_MaxValue 	= 1811
+	SBUS_MinValue 	= 171
+}
