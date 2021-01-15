@@ -37,6 +37,7 @@ Makefile
 CMakeCache.txt
 CMakeFiles
 pSBUS
+tags
 
 # MOOS log files
 examples/.LastOpenedMOOSLogDirectory
